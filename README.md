@@ -1,9 +1,15 @@
-## Cette application est en 3 parties : 
-1 - Frontend en React
-2 - Backend en FastAPI Python
-3 - Une base de données MongoDB
 
-## 1 - Lancer un container mongoDB avec ses volumes
+---
+
+# 📦 **Application en Trois Parties**
+
+1. **Frontend** : React
+2. **Backend** : FastAPI Python
+3. **Base de Données** : MongoDB
+
+---
+
+## 🗄️ **1. Lancer un Container MongoDB avec son Volume**
 
 ```sh
 docker volume create mongodb_data
@@ -16,41 +22,49 @@ docker run -d --name mongodb \
     mongo:latest
 ```
 
-## 2 - Dans le dossier backend :
+---
 
-- lancer un nouvel environnement python
+## ⚙️ **2. Dans le Dossier Backend**
+
+### Créer un Nouvel Environnement Python
+
 ```sh
 python3 -m venv env
 ```
 
-- se connecter à l'environnement python env
-sur unix : 
+### Se Connecter à l'Environnement Python
+
+#### Sur Unix
 ```sh
 source env/bin/activate
 ```
 
-sur windows en powershell:
+#### Sur Windows en PowerShell
 ```sh
 env\Scripts\activate
 ```
 
-- Installer les dépendances python
+### Installer les Dépendances Python
 ```sh
 pip install -r requirements.txt
 ```
 
-## 3 - Charger les données sur MongoDB
+---
 
-1 - Ouvrir Mongo Compass et y ajouter graphiquement: 
-    - la base de données dashboard
-    - la collection cars
-2 - Lancer le script de chargement dans la DB dans le dossier backend:
+## 📥 **3. Charger les Données sur MongoDB**
+
+1. **Ouvrir MongoDB Compass et Ajouter Graphiquement** :
+    - **Base de Données** : `dashboard`
+    - **Collection** : `cars`
+2. **Lancer le Script de Chargement dans la DB dans le Dossier Backend** :
 
 ```sh
 python3 importScript.py
 ```
 
-## 4 - Démarrer le front :
+---
+
+## 🌐 **4. Démarrer le Frontend**
 
 ```sh
 cd frontend
@@ -58,10 +72,14 @@ npm install
 npm start
 ```
 
-## 5 - Démarrer le backend
+---
+
+## 🔧 **5. Démarrer le Backend**
 
 ```sh
 cd backend
 python3 -m uvicorn main:app --reload
 ```
+
+---
 
