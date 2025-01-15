@@ -23,9 +23,6 @@ services:
       - MONGODB_URL=mongodb://mongodb:27017
       - DB_URL=mongodb://mongodb:27017/dashboard
       - DB_NAME=dashboard
-      - SENDGRID_ID=your_sendgrid_id
-      - SENDGRID_API_KEY=your_sendgrid_api_key
-      - SENDGRID_FROM_EMAIL=your_verified_sender_email
     networks:
       - app-network
     volumes:
