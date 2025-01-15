@@ -5,25 +5,22 @@ from decouple import config
 from models import CarBase
 
 # connect to mongodb
-DB_URL = config("DB_URL", cast=str)
-DB_NAME = config("DB_NAME", cast=str)
+DB_URL = config("DB_URL", default="mongodb://mongodb:27017/dashboard", cast=str)
+DB_NAME = config("DB_NAME", default="dashboard", cast=str)
 
 client = MongoClient(DB_URL)
 db = client[DB_NAME]
 cars = db["cars"]
 
+# Correction du chemin pour Docker
+file_path = "filteredCars.csv"
 
-#
-file_path = "/Users/invite/Desktop/FullStack React-Python-Mongo/backend/filteredCars.csv"
 # read csv
 with open(file_path, encoding="utf-8") as f:
     csv_reader = csv.DictReader(f)
     name_records = list(csv_reader)
 
-
 for rec in name_records:
-    print(rec)
-
     try:
         rec["cm3"] = int(rec["cm3"])
         rec["price"] = int(rec["price"])

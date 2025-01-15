@@ -1,57 +1,30 @@
-from decouple import config
 from fastapi import FastAPI
-
-import aioredis
-from fastapi_cache import FastAPICache
-from fastapi_cache.backends.redis import RedisBackend
-
-# il a peut être un souci avec le FastAPI's middleware
-# https://stackoverflow.com/questions/65191061/fastapi-cors-middleware-not-working-with-get-method/65994876#65994876
-
-from starlette.middleware import Middleware
-from starlette.middleware.cors import CORSMiddleware
-
-
-middleware = [
-    Middleware(
-        CORSMiddleware,
-        allow_origins=["*"],
-        allow_credentials=True,
-        allow_methods=["*"],
-        allow_headers=["*"],
-    )
-]
-
+from fastapi.middleware.cors import CORSMiddleware
 from motor.motor_asyncio import AsyncIOMotorClient
-
+from decouple import config
 from routers.cars import router as cars_router
 
+DB_URL: str = config("DB_URL", cast=str)
+DB_NAME: str = config("DB_NAME", cast=str)
 
-DB_URL = config("DB_URL", cast=str)
-DB_NAME = config("DB_NAME", cast=str)
+app: FastAPI = FastAPI()
 
-
-# define origins
-origins = [
-    "*",
-]
-
-# instantiate the app
-app = FastAPI(middleware=middleware)
+# Configuration CORS
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:3000"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 app.include_router(cars_router, prefix="/cars", tags=["cars"])
 
-
 @app.on_event("startup")
-async def startup_db_client():
+async def startup_db_client() -> None:
     app.mongodb_client = AsyncIOMotorClient(DB_URL)
     app.mongodb = app.mongodb_client[DB_NAME]
-    """ redis = aioredis.parser(
-        "redis://localhost:6379", encoding="utf8", decode_responses=True
-    )
-    FastAPICache.init(RedisBackend(redis), prefix="fastapi-cache") """
-
 
 @app.on_event("shutdown")
-async def shutdown_db_client():
+async def shutdown_db_client() -> None:
     app.mongodb_client.close()

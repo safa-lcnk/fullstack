@@ -1,18 +1,9 @@
-from .report_query import make_query
 from .send_report import send_report
 
-
-def report_pipeline(email, cars_number):
-
-    # make the query - get the data and some HTML
-    try:
-        query_data = make_query(cars_number)
-    except Exception as e:
-        print(e)
-        print("Couldn't make the query")
-
-    try:
-        send_report(email=email, subject="FARM Cars Report", HTMLcontent=query_data)
-
-    except Exception as e:
-        print(e)
+async def report_pipeline(email: str, cars_num: int) -> None:
+    """
+    Pipeline de génération et envoi de rapport
+    """
+    subject = "FARM Cars Report"
+    html_content = f"<p>Rapport pour {cars_num} voitures</p>"
+    send_report(email, subject, html_content)
