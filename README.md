@@ -1,6 +1,6 @@
-🐳 Bonnes Pratiques Docker
+## 🐳 Bonnes Pratiques Docker
 
-## 📝 Conventions d'écriture
+ 📝 Conventions d'écriture
 
 ### Dockerfile
 - Utiliser des commentaires explicites
@@ -15,9 +15,8 @@
 - Nommer explicitement les volumes et networks
 - Documenter les variables d'environnement
 
-🔒 Bonnes Pratiques de Sécurité
+## 🔒 Bonnes Pratiques de Sécurité
 
-### Suggestions de Sécurité (non implémentées)
 1. **Gestion des utilisateurs**
    - Créer des utilisateurs non-root
    - Limiter les permissions
@@ -46,18 +45,18 @@
 
 Pour vérifier les droits et groupes :
 
- -Backend : docker compose exec backend sh -> ls -la
- -Frontend : docker compose exec frontend sh -> ls -la
- -MongoDB : docker compose exec mongodb sh -> ls -la
+ - Backend : docker compose exec backend sh -> ls -la
+ - Frontend : docker compose exec frontend sh -> ls -la
+ - MongoDB : docker compose exec mongodb sh -> ls -la
 
-d : directory
-r : read
-w : write
-x : execute
+ - d : directory
+ - r : read
+ - w : write
+ - x : execute
 
-1er groupe : user
-2eme groupe : group
-3eme groupe : other
+ - 1er groupe : user
+ - 2eme groupe : group
+ - 3eme groupe : other
 
  ## 🚀 Commandes Docker Essentielles
 ```bash
