@@ -3,6 +3,7 @@
  📝 Conventions d'écriture
 
 ### Dockerfile
+- Ajouter des labels pour la maintenance
 - Utiliser des commentaires explicites
 - Organiser les instructions par ordre logique
 - Minimiser le nombre de layers (combiner les RUN quand possible)

@@ -1,37 +1,34 @@
-# Image de base Node.js légère
-FROM node:20.9.0-alpine
+# Étape 1 : Construction
+# Utilisation d'une image Node.js légère pour la construction
+FROM node:20.9.0-alpine AS builder  
 
-# Définition du répertoire de travail
-WORKDIR /app
+# Définition du répertoire de travail à /app
+WORKDIR /app  
 
-# Installation de Trivy pour le scan de sécurité
-RUN apk add --no-cache wget tar \
-    && wget -qO - https://github.com/aquasecurity/trivy/releases/download/v0.18.3/trivy_0.18.3_Linux-64bit.tar.gz | tar xz \
-    && mv trivy /usr/local/bin
-
-# Ajout d'un utilisateur non-root
-RUN addgroup -S appgroup && adduser -S appuser -G appgroup
-
-# Copie des fichiers de dépendances
-COPY package*.json ./
+# Copie des fichiers de dépendances (package.json et package-lock.json)
+COPY package*.json ./  
 
 # Installation des dépendances Node.js
-RUN npm install
+RUN npm install  
 
-# Changer le propriétaire du répertoire de travail
-RUN chown -R appuser:appgroup /app
+# Copie du code source de l'application dans le conteneur
+COPY . .  
 
-# Copie du code source
-COPY . .
+# Construction de l'application React (génération des fichiers statiques)
+RUN npm run build  
 
-# Lancement du scan de sécurité
-RUN trivy filesystem --no-progress --ignore-unfixed --severity HIGH,CRITICAL /app
+# Étape 2 : Production
+# Utilisation d'une image Nginx légère pour servir les fichiers statiques
+FROM nginx:alpine  
 
-# Passer à l'utilisateur non-root
-USER appuser
+# Copier les fichiers construits dans le répertoire de Nginx
+COPY --from=builder /app/build /usr/share/nginx/html  
 
-# Exposition du port
-EXPOSE 3000
+# Vérifier les droits d'accès pour Nginx
+RUN chown -R nginx:nginx /usr/share/nginx/html  
 
-# Démarrage de l'application
-CMD ["npm", "start"] 
+# Exposition du port 80 pour que Nginx puisse servir l'application
+EXPOSE 80  
+
+# Commande pour démarrer Nginx
+CMD ["nginx", "-g", "daemon off;"] 
