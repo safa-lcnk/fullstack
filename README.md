@@ -49,14 +49,13 @@ Pour vérifier les droits et groupes :
  - Frontend : docker compose exec frontend sh -> ls -la
  - MongoDB : docker compose exec mongodb sh -> ls -la
 
- - d : directory
- - r : read
- - w : write
- - x : execute
+| Permissions | User (u) | Group (g) | Other (o) |
+|-------------|----------|-----------|-----------|
+| **d**       | Directory | -         | -         |
+| **r**       | Read      | Read      | Read      |
+| **w**       | Write     | Write     | Write     |
+| **x**       | Execute   | Execute   | Execute   |
 
- - 1er groupe : user
- - 2eme groupe : group
- - 3eme groupe : other
 
  ## 🚀 Commandes Docker Essentielles
 ```bash
